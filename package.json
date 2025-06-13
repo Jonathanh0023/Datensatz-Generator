@@ -1,0 +1,23 @@
+{
+  "name": "rogator-tester",
+  "version": "1.0.0",
+  "description": "Automated testing for Rogator surveys.",
+  "main": "src/rogator_direct.js",
+  "scripts": {
+    "start": "node src/rogator_direct.js",
+    "start:turbo": "node src/rogator_direct.js --turbo",
+    "start:debug": "node src/rogator_direct.js --debug"
+  },
+  "keywords": [
+    "playwright",
+    "rogator",
+    "testing",
+    "automation"
+  ],
+  "author": "Your Team",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "playwright": "^1.40.0" 
+  }
+} 

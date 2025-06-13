@@ -1,0 +1,35 @@
+{
+  "surveyUrl": "https://sw01.rogsurvey.de/html/survey.htm?n=bonsai/Automatisierung&la=de",
+  "numTestRuns": 1,
+  "preferredLanguage": "deutsch",
+  "logDirectory": "logs",
+  "screener": {
+    "enabled": true,
+    "questions": [
+      {
+        "questionText": "Sind Sie… ?",
+        "answerText": "Weiblich"
+      },
+      {
+        "questionText": "Wie alt sind Sie?",
+        "answerText": "45"
+      },
+      {
+        "questionText": "Arbeiten Sie oder jemand aus Ihrem Haushalt in einer der folgenden Branchen?",
+        "answerText": "Andere Branchen"
+      },
+      {
+        "questionText": "In welchem Bundesland leben Sie?",
+        "answerText": "Baden-Württemberg"
+      },
+      {
+        "questionText": "Welche der folgenden Produkte verwenden Sie persönlich regelmäßig in Ihrem Haushalt?",
+        "answerText": "WC-Flüssigreiniger"
+      },
+      {
+        "questionText": "Kaufen Sie Ihre WC-Flüssigreiniger selbst oder kauft sie jemand anderes für Sie?",
+        "answerText": "Ich kaufe sie selbst."
+      }
+    ]
+  }
+}
