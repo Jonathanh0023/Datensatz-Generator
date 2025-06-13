@@ -98,8 +98,7 @@ def run_survey_process(config_data, mode_args, log_queue):
 
 # Main app
 def main():
-    st.title("🤖 Rogator Umfrage-Automatisierung")
-    st.markdown("---")
+    st.title("🤖 Datensatz-Generator")
     
     # Load current config
     config_data = load_config()
@@ -112,7 +111,7 @@ def main():
         survey_url = st.text_input(
             "Umfrage-URL",
             value=config_data.get('surveyUrl', ''),
-            help="Die Rogator Umfrage-URL, die du automatisieren möchtest"
+            help="Die Umfrage-URL, die du automatisieren möchtest"
         )
         
         # Number of test runs
@@ -175,7 +174,6 @@ def main():
         # Execution mode
         mode_options_map = {
             "Normal": "Normal",
-            "Visuell": "Visual",
             "Turbo": "Turbo",
             "Gleichzeitig": "Concurrent"
         }
@@ -214,195 +212,144 @@ def main():
                 st.success("Konfiguration gespeichert!")
                 st.rerun()
     
-    # Main content area
-    col1, col2 = st.columns([2, 1])
+    # Main content area - single column layout
+    st.markdown("---")
+    st.header("🎮 Hauptmenü")
     
-    with col1:
-        st.header("🎮 Umfragesteuerung")
-        
-        # Survey control buttons
-        button_col1, button_col2, button_col3 = st.columns(3)
-        
-        with button_col1:
-            if not st.session_state.survey_running:
-                if st.button("▶️ Umfrage starten", type="primary", use_container_width=True):
-                    if not survey_url:
-                        st.error("Bitte gib zuerst eine Umfrage-URL ein!")
-                    else:
-                        # Build mode arguments
-                        mode_args = []
-                        if execution_mode == "Visual":
-                            mode_args.append("--visual")
-                        elif execution_mode == "Turbo":
-                            mode_args.append("--turbo")
-                        elif execution_mode == "Concurrent":
-                            mode_args.extend(["--turbo", f"--concurrent={concurrent_instances}"])
-                        
-                        # Clear previous logs
-                        st.session_state.survey_logs = []
-                        st.session_state.survey_running = True
-                        
-                        # Use the queue from session state
-                        log_queue = st.session_state.log_queue
-                        
-                        # Start survey in thread
-                        thread = threading.Thread(
-                            target=run_survey_process,
-                            args=(updated_config, mode_args, log_queue)
-                        )
-                        thread.daemon = True
-                        thread.start()
-                        
-                        st.success(f"Umfrage im {execution_mode_display}-Modus gestartet!")
-                        st.rerun()
-            else:
-                if st.button("⏹️ Umfrage stoppen", type="secondary", use_container_width=True):
-                    if hasattr(st.session_state, 'survey_process'):
-                        st.session_state.survey_process.terminate()
-                    st.session_state.survey_running = False
-                    st.warning("Umfrage gestoppt!")
+    # Survey control buttons
+    button_col1, button_col2, button_col3 = st.columns(3)
+    
+    with button_col1:
+        if not st.session_state.survey_running:
+            if st.button("▶️ Umfrage starten", type="primary", use_container_width=True):
+                if not survey_url:
+                    st.error("Bitte gib zuerst eine Umfrage-URL ein!")
+                else:
+                    # Build mode arguments
+                    mode_args = []
+                    if execution_mode == "Turbo":
+                        mode_args.append("--turbo")
+                    elif execution_mode == "Concurrent":
+                        mode_args.extend(["--turbo", f"--concurrent={concurrent_instances}"])
+                    
+                    # Clear previous logs
+                    st.session_state.survey_logs = []
+                    st.session_state.survey_running = True
+                    
+                    # Use the queue from session state
+                    log_queue = st.session_state.log_queue
+                    
+                    # Start survey in thread
+                    thread = threading.Thread(
+                        target=run_survey_process,
+                        args=(updated_config, mode_args, log_queue)
+                    )
+                    thread.daemon = True
+                    thread.start()
+                    
+                    st.success(f"Umfrage im {execution_mode_display}-Modus gestartet!")
                     st.rerun()
-        
-        with button_col2:
-            if st.button("🔄 Logs aktualisieren", use_container_width=True):
-                st.rerun()
-        
-        with button_col3:
-            if st.button("🗑️ Logs löschen", use_container_width=True):
-                st.session_state.survey_logs = []
-                st.rerun()
-        
-        # Status indicator
-        if st.session_state.survey_running:
-            st.success("🟢 Umfrage läuft...")
         else:
-            st.info("🔵 Umfrage gestoppt")
-        
-        # Live logs
-        st.subheader("📋 Live-Logs")
-        
-        # This part handles draining the queue and updating the UI
-        while not st.session_state.get('log_queue', queue.Queue()).empty():
-            log_entry = st.session_state.log_queue.get_nowait()
-            if log_entry is None:
+            if st.button("⏹️ Umfrage stoppen", type="secondary", use_container_width=True):
+                if hasattr(st.session_state, 'survey_process'):
+                    st.session_state.survey_process.terminate()
                 st.session_state.survey_running = False
-                break
-            st.session_state.survey_logs.append({
-                'timestamp': datetime.now().strftime('%H:%M:%S'),
-                'message': log_entry
-            })
-
-        log_placeholder = st.empty()
-
-        with log_placeholder.container():
-            if st.session_state.survey_running:
-                st.info("🟢 Umfrage läuft... die Logs siehst du unten.")
-            else:
-                st.info("🔵 Umfrage ist gestoppt.")
-            
-            # Display logs from session state
-            if st.session_state.survey_logs:
-                log_messages = [f"[{log['timestamp']}] {log['message']}" for log in st.session_state.survey_logs]
-                log_text = "\n".join(reversed(log_messages))
-                st.text_area("Logs", value=log_text, height=400, key="log_area", disabled=True)
-            else:
-                st.info("Noch keine Logs vorhanden. Starte eine Umfrage, um Live-Updates zu sehen.")
-        
-        # Auto-refresh when survey is running
-        if st.session_state.survey_running:
-            time.sleep(1) # Short sleep to yield control
+                st.warning("Umfrage gestoppt!")
+                st.rerun()
+    
+    with button_col2:
+        if st.button("🔄 Logs aktualisieren", use_container_width=True):
             st.rerun()
     
-    with col2:
-        st.header("📊 Ergebnis-Dashboard")
+    with button_col3:
+        if st.button("🗑️ Logs löschen", use_container_width=True):
+            st.session_state.survey_logs = []
+            st.rerun()
+    
+    # Status indicator
+    if st.session_state.survey_running:
+        st.success("🟢 Umfrage läuft...")
+    else:
+        st.info("🔵 Umfrage gestoppt")
+    
+    # Simplified Live logs
+    st.subheader("📋 Umfrage-Verlauf")
+    
+    # This part handles draining the queue and updating the UI
+    while not st.session_state.get('log_queue', queue.Queue()).empty():
+        log_entry = st.session_state.log_queue.get_nowait()
+        if log_entry is None:
+            st.session_state.survey_running = False
+            break
+        st.session_state.survey_logs.append({
+            'timestamp': datetime.now().strftime('%H:%M:%S'),
+            'message': log_entry
+        })
+
+    log_placeholder = st.empty()
+
+    def simplify_log_message(message):
+        """Make log messages more human-readable"""
+        # Remove technical prefixes and simplify common messages
+        message = message.strip()
         
-        # Log file selector
-        log_files = get_log_files()
-        if log_files:
-            selected_log = st.selectbox(
-                "Log-Datei auswählen",
-                options=log_files,
-                format_func=lambda x: f"{x.name} ({datetime.fromtimestamp(x.stat().st_mtime).strftime('%Y-%m-%d %H:%M')})"
-            )
-            
-            if selected_log:
-                log_data = load_log_file(selected_log)
-                
-                if log_data:
-                    # Convert to DataFrame
-                    df = pd.DataFrame(log_data)
-                    
-                    # Summary metrics
-                    total_runs = df['run_id'].nunique() if 'run_id' in df.columns else 0
-                    successful_runs = len(df[df['success'] == True]) if 'success' in df.columns else 0
-                    failed_runs = len(df[df['success'] == False]) if 'success' in df.columns else 0
-                    
-                    # Display metrics
-                    metric_col1, metric_col2, metric_col3 = st.columns(3)
-                    with metric_col1:
-                        st.metric("Testläufe Gesamt", total_runs)
-                    with metric_col2:
-                        st.metric("Erfolgreich", successful_runs)
-                    with metric_col3:
-                        st.metric("Fehlgeschlagen", failed_runs)
-                    
-                    # Success rate chart
-                    if total_runs > 0:
-                        success_rate = (successful_runs / (successful_runs + failed_runs)) * 100 if (successful_runs + failed_runs) > 0 else 0
-                        
-                        fig = go.Figure(go.Indicator(
-                            mode = "gauge+number+delta",
-                            value = success_rate,
-                            domain = {'x': [0, 1], 'y': [0, 1]},
-                            title = {'text': "Erfolgsrate (%)"},
-                            delta = {'reference': 80},
-                            gauge = {
-                                'axis': {'range': [None, 100]},
-                                'bar': {'color': "darkblue"},
-                                'steps': [
-                                    {'range': [0, 50], 'color': "lightgray"},
-                                    {'range': [50, 80], 'color': "gray"}
-                                ],
-                                'threshold': {
-                                    'line': {'color': "red", 'width': 4},
-                                    'thickness': 0.75,
-                                    'value': 90
-                                }
-                            }
-                        ))
-                        fig.update_layout(height=300)
-                        st.plotly_chart(fig, use_container_width=True)
-                    
-                    # Question type distribution
-                    if 'type' in df.columns:
-                        type_counts = df['type'].value_counts()
-                        fig_pie = px.pie(
-                            values=type_counts.values,
-                            names=type_counts.index,
-                            title="Verteilung der Fragetypen"
-                        )
-                        fig_pie.update_layout(height=400)
-                        st.plotly_chart(fig_pie, use_container_width=True)
-                    
-                    # Recent errors
-                    if 'error' in df.columns:
-                        errors = df[df['error'].notna() & (df['error'] != '')]
-                        if not errors.empty:
-                            st.subheader("🚨 Letzte Fehler")
-                            for _, error_row in errors.tail(5).iterrows():
-                                st.error(f"Lauf {error_row.get('run_id', 'N/A')}, Seite {error_row.get('page', 'N/A')}: {error_row['error']}")
-                    
-                    # Download results
-                    if st.button("📥 Ergebnisse als CSV herunterladen"):
-                        csv = df.to_csv(index=False)
-                        st.download_button(
-                            label="CSV herunterladen",
-                            data=csv,
-                            file_name=f"survey_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                            mime="text/csv"
-                        )
+        # Common patterns to simplify
+        if "=== Minimal Rogator Automation ===" in message:
+            return "🚀 Umfrage-Automatisierung gestartet"
+        elif "Configuration loaded successfully" in message:
+            return "✅ Konfiguration geladen"
+        elif "Starting survey run" in message:
+            return "▶️ Neuer Umfrage-Durchlauf gestartet"
+        elif "Survey completed successfully" in message:
+            return "✅ Umfrage erfolgreich abgeschlossen"
+        elif "Processing page" in message:
+            return "📄 Bearbeite Seite..."
+        elif "Found question:" in message:
+            return f"❓ Frage gefunden: {message.split('Found question:')[-1].strip()}"
+        elif "Selected answer:" in message:
+            return f"✔️ Antwort gewählt: {message.split('Selected answer:')[-1].strip()}"
+        elif "Error:" in message.lower():
+            return f"❌ Fehler: {message.split('Error:')[-1].strip()}"
+        elif "WARNING:" in message:
+            return f"⚠️ Warnung: {message.split('WARNING:')[-1].strip()}"
+        elif message.startswith("[") and "]" in message:
+            # Remove timestamp prefix if it exists
+            return message.split("]", 1)[-1].strip()
+        
+        return message
+
+    with log_placeholder.container():
+        if st.session_state.survey_running:
+            st.info("🟢 Umfrage läuft... Hier siehst du was gerade passiert:")
         else:
-            st.info("Keine Log-Dateien gefunden. Führe eine Umfrage durch, um Ergebnisse zu erzeugen.")
+            st.info("🔵 Umfrage ist gestoppt.")
+        
+        # Display simplified logs from session state
+        if st.session_state.survey_logs:
+            # Show only the last 20 messages for better readability
+            recent_logs = st.session_state.survey_logs[-20:]
+            
+            for log in reversed(recent_logs):
+                simplified_message = simplify_log_message(log['message'])
+                
+                # Color code based on message type
+                if simplified_message.startswith("✅"):
+                    st.success(f"[{log['timestamp']}] {simplified_message}")
+                elif simplified_message.startswith("❌"):
+                    st.error(f"[{log['timestamp']}] {simplified_message}")
+                elif simplified_message.startswith("⚠️"):
+                    st.warning(f"[{log['timestamp']}] {simplified_message}")
+                elif simplified_message.startswith("🚀") or simplified_message.startswith("▶️"):
+                    st.info(f"[{log['timestamp']}] {simplified_message}")
+                else:
+                    st.text(f"[{log['timestamp']}] {simplified_message}")
+        else:
+            st.info("Noch keine Aktivität. Starte eine Umfrage, um den Verlauf zu sehen.")
+    
+    # Auto-refresh when survey is running
+    if st.session_state.survey_running:
+        time.sleep(1)  # Short sleep to yield control
+        st.rerun()
 
 if __name__ == "__main__":
     init_session_state()
