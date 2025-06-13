@@ -13,7 +13,7 @@ import queue
 
 # Page configuration
 st.set_page_config(
-    page_title="Rogator Umfrage-Automatisierung",
+    page_title="bonsAI - Umfrage-Automatisierung",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
