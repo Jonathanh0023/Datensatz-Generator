@@ -1,6 +1,6 @@
-# Rogator Survey Tester
+# Survey Tester
 
-Dieses Skript führt automatisierte Testdurchläufe für eine konfigurierte Rogator-Umfrage mit Playwright durch.
+Dieses Skript führt automatisierte Testdurchläufe für eine konfigurierte -Umfrage mit Playwright durch.
 
 ## 🌟 Neue Web-App verfügbar!
 
@@ -45,10 +45,10 @@ Die Web-App bietet:
 
 ## Konfiguration
 
-*   Bearbeite die Datei `config.json` im `rogator-tester`-Verzeichnis, um die Testparameter anzupassen:
-    *   `surveyUrl`: Die URL der Rogator-Umfrage.
+*   Bearbeite die Datei `config.json` im `-tester`-Verzeichnis, um die Testparameter anzupassen:
+    *   `surveyUrl`: Die URL der -Umfrage.
     *   `numTestRuns`: Die Anzahl der gewünschten Testdurchläufe.
-    *   `logDirectory`: Der Ordner (relativ zum `rogator-tester`-Verzeichnis), in dem die JSON-Logdateien gespeichert werden sollen. Dieser Ordner wird bei Bedarf erstellt.
+    *   `logDirectory`: Der Ordner (relativ zum `-tester`-Verzeichnis), in dem die JSON-Logdateien gespeichert werden sollen. Dieser Ordner wird bei Bedarf erstellt.
     *   `preferredLanguage`: Die bevorzugte Sprache für die Umfrage ("deutsch" oder "english").
 
 ### Screener-Konfiguration
@@ -116,7 +116,7 @@ Das Skript unterstützt vordefinierte Antworten für spezifische Fragen (Screene
 ## Ausführung
 
 1.  **Test starten:**
-    *   Öffne eine Kommandozeile (cmd oder PowerShell) im `rogator-tester`-Verzeichnis.
+    *   Öffne eine Kommandozeile (cmd oder PowerShell) im `-tester`-Verzeichnis.
     *   Führe das Skript `run_survey.bat` aus.
     ```bash
     .\run_survey.bat
@@ -139,4 +139,4 @@ Das Skript unterstützt vordefinierte Antworten für spezifische Fragen (Screene
 ## Logs
 
 *   Nach jedem Durchlauf wird eine JSON-Datei mit detaillierten Logs im konfigurierten `logDirectory` (standardmäßig `logs/`) gespeichert. Der Dateiname enthält einen Zeitstempel.
-*   Fehler-Screenshots (z.B. bei Interaktionsfehlern oder unerwarteten Seiten) werden direkt im `rogator-tester`-Verzeichnis gespeichert. 
+*   Fehler-Screenshots (z.B. bei Interaktionsfehlern oder unerwarteten Seiten) werden direkt im `-tester`-Verzeichnis gespeichert. 
