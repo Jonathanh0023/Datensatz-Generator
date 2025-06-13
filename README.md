@@ -1,6 +1,6 @@
-# 🤖 Rogator Survey Automation - Web App
+# 🤖  Survey Automation - Web App
 
-A user-friendly Streamlit web application for automating Rogator surveys with real-time monitoring and results visualization.
+A user-friendly Streamlit web application for automating  surveys with real-time monitoring and results visualization.
 
 ## 🌟 Features
 
@@ -11,7 +11,7 @@ A user-friendly Streamlit web application for automating Rogator surveys with re
 - **Historical Data** - Browse and analyze previous survey runs
 
 ### ⚙️ **Configuration Options**
-- **Survey URL** - Set the Rogator survey link
+- **Survey URL** - Set the  survey link
 - **Test Runs** - Configure number of survey completions (1-100)
 - **Language Selection** - Choose between German and English
 - **Screener Mode** - Define predefined answers for specific questions
@@ -53,7 +53,7 @@ Open your browser and go to: `http://localhost:8501`
 ## 📋 How to Use
 
 ### **Step 1: Configure Survey Settings**
-1. **Enter Survey URL** - Paste your Rogator survey link in the sidebar
+1. **Enter Survey URL** - Paste your  survey link in the sidebar
 2. **Set Number of Runs** - Choose how many completions you want (1-100)
 3. **Select Language** - Choose German or English
 4. **Save Configuration** - Click "💾 Save Configuration"
@@ -139,13 +139,13 @@ Question: "Häufigkeit" → Answer: "Regelmäßig"
 ## 📁 File Structure
 
 ```
-Rogator_Datensatz_Creator/
+_Datensatz_Creator/
 ├── streamlit_app.py              # Main Streamlit application
 ├── requirements_streamlit.txt    # Python dependencies
 ├── run_streamlit_app.bat        # Windows batch file to run app
 ├── config.json                  # Survey configuration
 ├── src/
-│   └── rogator_direct_minimal.js # Core automation script
+│   └── _direct_minimal.js # Core automation script
 └── logs/                        # Survey result logs
     └── *.json                   # Individual log files
 ```
