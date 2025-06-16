@@ -25,14 +25,13 @@
 1. Doppelklick auf: `start_streamlit_quick.bat`
 2. Warten bis "OEFFNE: http://localhost:8501" erscheint
 3. Browser öffnet automatisch ODER
-4. Manuell öffnen: http://localhost:8501
+4. Manuell öffnen: http://localhost:8501 (STRG gedrückt halten beim Klick)
 
 ## 📊 App benutzen
 
 ### 1. Umfrage konfigurieren (Seitenleiste links)
-- **Umfrage-URL**: Deine Rogator-Umfrage-URL einfügen
+- **Umfrage-URL**: Deine Umfrage-URL einfügen
 - **Anzahl Testläufe**: Wie viele Umfragen (z.B. 5)
-- **Sprache**: Deutsch oder Englisch wählen
 
 ### 2. Screener einrichten (optional)
 - **Screener aktivieren**: Häkchen setzen
@@ -42,10 +41,9 @@
   - Antwort: "45"
 
 ### 3. Modus wählen
-- **Normal**: Standard (empfohlen für Anfänger)
-- **Visuell**: Du siehst den Browser (langsamer, gut zum Testen)
-- **Turbo**: Schneller
-- **Gleichzeitig**: Mehrere Browser parallel (sehr schnell)
+- **Normal**: Standard (visuelle Ansicht - besser nachvollziehbar, was passiert)
+- **Turbo**: Schneller (nicht visuell)
+- **Gleichzeitig**: Mehrere Browser parallel (ultra schnell)
 
 ### 4. Umfrage starten
 1. **"💾 Konfiguration speichern"** klicken
@@ -57,13 +55,6 @@
 - **Logs**: Echzeit-Fortschritt im Hauptbereich
 - **Auswertung**: Tab "📊 Auswertung" für Statistiken
 - **Download**: CSV-Export für weitere Analyse
-
-## 🎯 Tipps für Anfänger
-
-### Erster Test:
-1. **Kleine Anzahl**: Starte mit 2-3 Testläufen
-2. **Visuell-Modus**: Nutze "Visuell" um zu sehen was passiert
-3. **Ohne Screener**: Erstmal ohne vordefinierte Antworten testen
 
 ### Häufige Probleme:
 - **Browser öffnet nicht**: Manuell zu http://localhost:8501 gehen
@@ -107,6 +98,6 @@
 - ✅ "▶️ Umfrage starten" Button ist sichtbar
 
 **Bei Problemen:**
-- Screenshot machen
+- Screenshot machen 
 - Terminal-Ausgabe kopieren
-- Hilfe holen 😊 
+- Hilfe bei Jonatahan holen 😊 
