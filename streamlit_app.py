@@ -123,12 +123,8 @@ def main():
             help="Wie viele Umfragen abgeschlossen werden sollen"
         )
         
-        # Language preference
-        language = st.selectbox(
-            "Bevorzugte Sprache",
-            options=["deutsch", "english"],
-            index=0 if config_data.get('preferredLanguage', 'deutsch') == 'deutsch' else 1
-        )
+        # Set default language (no UI selection needed)
+        language = "deutsch"
         
         st.subheader("🎯 Screener-Konfiguration")
         
@@ -175,7 +171,7 @@ def main():
         mode_options_map = {
             "Normal": "Normal",
             "Turbo": "Turbo",
-            "Gleichzeitig": "Concurrent"
+            "Parallel": "Concurrent"
         }
         execution_mode_display = st.radio(
             "Modus",
