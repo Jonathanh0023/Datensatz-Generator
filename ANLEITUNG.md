@@ -3,8 +3,9 @@
 ## 📋 Was brauche ich?
 
 **Vor dem ersten Start:**
-1. **Python** - Herunterladen von: https://python.org
-2. **Node.js** - Herunterladen von: https://nodejs.org
+1. **Ordner in lokales Verzeichnis kopieren** - dies hat entscheidenen Einfluss auf die Performance des Skripts
+2. **Python** - Herunterladen von: https://python.org
+3. **Node.js** - Herunterladen von: https://nodejs.org
 
 ## 🚀 Erste Schritte (nur einmal nötig)
 
